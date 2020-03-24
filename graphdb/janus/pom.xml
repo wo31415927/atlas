@@ -92,7 +92,19 @@
                     <groupId>ch.qos.logback</groupId>
                     <artifactId>*</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.sleep</groupId>
+                    <artifactId>je</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sleep</groupId>
+            <artifactId>je</artifactId>
+            <version>7.4.5</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/je-7.4.5.jar</systemPath>
         </dependency>
 
         <dependency>

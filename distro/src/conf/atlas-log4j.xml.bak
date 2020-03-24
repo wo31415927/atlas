@@ -38,7 +38,7 @@
     </appender>
 
     <appender name="LARGE_MESSAGES" class="org.apache.log4j.RollingFileAppender">
-        <param name="File" value="${atlas.log.dir}/large_messages.log"/>
+        <param name="File" value="{{log_dir}}/large_messages.log"/>
         <param name="Append" value="true"/>
         <param name="MaxFileSize" value="100MB" />
         <param name="MaxBackupIndex" value="20" />
@@ -95,16 +95,16 @@
 
     <logger name="org.apache.atlas" additivity="false">
         <level value="info"/>
-        <appender-ref ref="console"/>
+        <appender-ref ref="FILE"/>
     </logger>
 
     <logger name="org.janusgraph" additivity="false">
-        <level value="info"/>
-        <appender-ref ref="console"/>
+        <level value="warn"/>
+        <appender-ref ref="FILE"/>
     </logger>
 
     <logger name="org.springframework" additivity="false">
-        <level value="info"/>
+        <level value="warn"/>
         <appender-ref ref="console"/>
     </logger>
 
@@ -145,8 +145,8 @@
     </logger>
 
     <root>
-        <priority value="info"/>
-        <appender-ref ref="console"/>
+        <priority value="warn"/>
+        <appender-ref ref="FILE"/>
     </root>
 
 </log4j:configuration>

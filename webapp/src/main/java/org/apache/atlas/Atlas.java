@@ -107,6 +107,7 @@ public final class Atlas {
         }
 
         setApplicationHome();
+        //从atlas-application.properties加载Configuration对象并设置到ApplicationProperties.instance中
         Configuration configuration = ApplicationProperties.get();
         final String enableTLSFlag = configuration.getString(SecurityProperties.TLS_ENABLED);
         final String appHost = configuration.getString(SecurityProperties.BIND_ADDRESS, EmbeddedServer.ATLAS_DEFAULT_BIND_ADDRESS);

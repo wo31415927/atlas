@@ -626,7 +626,7 @@
                     <daemon>true</daemon>
                     <webAppSourceDirectory>${project.basedir}/src/main/webapp</webAppSourceDirectory>
                     <webApp>
-                        <contextPath>/</contextPath>
+                        <contextPath>/atlas</contextPath>
                         <descriptor>${project.basedir}/src/main/webapp/WEB-INF/web.xml</descriptor>
                         <extraClasspath>${project.build.testOutputDirectory}</extraClasspath>
                     </webApp>
@@ -731,6 +731,7 @@
                 </executions>
             </plugin>
 
+            <!-- 创建api文档 -->
             <plugin>
                 <groupId>com.webcohesion.enunciate</groupId>
                 <artifactId>enunciate-maven-plugin</artifactId>
