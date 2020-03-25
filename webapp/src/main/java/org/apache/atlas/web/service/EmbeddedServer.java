@@ -42,6 +42,7 @@ public class EmbeddedServer {
     public static final Logger LOG = LoggerFactory.getLogger(EmbeddedServer.class);
 
     public static final String ATLAS_DEFAULT_BIND_ADDRESS = "0.0.0.0";
+    public static final String WEB_CONTEXT_PATH = "/atlas";
 
     protected final Server server;
 
@@ -59,12 +60,19 @@ public class EmbeddedServer {
         Connector connector = getConnector(host, port);
         server.addConnector(connector);
 
-        WebAppContext application = getWebAppContext(path);
+        WebAppContext application = getWebAppContext(path,WEB_CONTEXT_PATH);
         server.setHandler(application);
     }
 
     protected WebAppContext getWebAppContext(String path) {
-        WebAppContext application = new WebAppContext(path, "/");
+        return getWebAppContext(path,"/");
+    }
+
+    protected WebAppContext getWebAppContext(String path,String contextPath) {
+        /**
+         * 支持设置web上下文根
+         */
+        WebAppContext application = new WebAppContext(path, contextPath);
         application.setClassLoader(Thread.currentThread().getContextClassLoader());
         // Disable directory listing
         application.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
