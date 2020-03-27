@@ -79,7 +79,7 @@ public class FullTextSearchProcessor extends SearchProcessor {
         }
 
         queryString.append(")");
-
+        // 封装了底层JanusGraph的IndexQueryBuilder，并没有真正去查
         indexQuery = context.getGraph().indexQuery(Constants.FULLTEXT_INDEX, queryString.toString());
     }
 

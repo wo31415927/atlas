@@ -515,7 +515,7 @@ public class EntityDiscoveryService implements AtlasDiscoveryService {
             searchTracker.remove(searchID);
         }
 
-        scrubSearchResults(ret);
+        scrubSearchResults(ret);  //根据当前登录的用户角色来净化结果
 
         return ret;
     }

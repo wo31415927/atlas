@@ -25,6 +25,7 @@ import org.apache.commons.configuration.Configuration;
  */
 public enum AtlasConfiguration {
     //web server configuration
+    WEBSERVER_IDLE_TIMEOUT("atlas.webserver.idleTimeout",300000),
     WEBSERVER_MIN_THREADS("atlas.webserver.minthreads", 10),
     WEBSERVER_MAX_THREADS("atlas.webserver.maxthreads", 100),
     WEBSERVER_KEEPALIVE_SECONDS("atlas.webserver.keepalivetimesecs", 60),

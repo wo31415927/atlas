@@ -99,7 +99,7 @@ public class SearchContext {
         }
 
         // Invalid attributes will raise an exception with 400 error code
-        validateAttributes(entityType, searchParameters.getEntityFilters());
+        validateAttributes(entityType, searchParameters.getEntityFilters());  //校验Filter中涉及的属性是否包含在type中
 
         // Invalid attributes will raise an exception with 400 error code
         validateAttributes(classificationType, searchParameters.getTagFilters());
