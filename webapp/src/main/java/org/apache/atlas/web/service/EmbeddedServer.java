@@ -18,6 +18,7 @@
 
 package org.apache.atlas.web.service;
 
+import groovy.util.logging.Slf4j;
 import org.apache.atlas.AtlasConfiguration;
 import org.apache.atlas.AtlasErrorCode;
 import org.apache.atlas.exception.AtlasBaseException;
@@ -94,13 +95,17 @@ public class EmbeddedServer {
         final int bufferSize = AtlasConfiguration.WEBSERVER_REQUEST_BUFFER_SIZE.getInt();
         // default is 30s,change to 300s
         final int idleTimeout = AtlasConfiguration.WEBSERVER_IDLE_TIMEOUT.getInt();
+        final int outputBufferSize = AtlasConfiguration.WEBSERVER_RESPONSE_OUTPUT_BUFFER_SIZE.getInt();
         http_config.setResponseHeaderSize(bufferSize);
         http_config.setRequestHeaderSize(bufferSize);
         http_config.setIdleTimeout(idleTimeout);
+        http_config.setOutputBufferSize(outputBufferSize);
 
         ServerConnector connector = new ServerConnector(server, new HttpConnectionFactory(http_config));
         connector.setPort(port);
         connector.setHost(host);
+        connector.setIdleTimeout(idleTimeout);
+        LOG.info("jetty connector idleTimeout:{},outputBufferSize:{}",connector.getIdleTimeout(),http_config.getOutputBufferSize());
         return connector;
     }
 

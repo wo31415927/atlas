@@ -18,6 +18,7 @@
 
 package org.apache.atlas.web.filters;
 
+import com.google.common.base.Strings;
 import org.apache.atlas.AtlasClient;
 import org.apache.atlas.AtlasException;
 import org.apache.atlas.RequestContext;
@@ -74,7 +75,7 @@ public class AuditFilter implements Filter {
         final Date                requestTime         = new Date();
         final HttpServletRequest  httpRequest        = (HttpServletRequest) request;
         final HttpServletResponse httpResponse       = (HttpServletResponse) response;
-        final String              requestId          = UUID.randomUUID().toString();
+        final String              requestId          = Strings.isNullOrEmpty(httpRequest.getHeader(AtlasClient.REQUEST_ID)) ? UUID.randomUUID().toString() : httpRequest.getHeader(AtlasClient.REQUEST_ID);
         final Thread              currentThread      = Thread.currentThread();
         final String              oldName            = currentThread.getName();
         final String              user               = AtlasAuthorizationUtils.getCurrentUserName();
@@ -82,6 +83,7 @@ public class AuditFilter implements Filter {
         final String              deleteType         = httpRequest.getParameter("deleteType");
 
         try {
+            LOG.info("auditFilter:{}",requestId);
             currentThread.setName(formatName(oldName, requestId));
 
             RequestContext.clear();
@@ -97,14 +99,14 @@ public class AuditFilter implements Filter {
                 }
             }
 
+            // put the request id into the response so users can trace logs for this request
+            httpResponse.setHeader(AtlasClient.REQUEST_ID, requestId);
             filterChain.doFilter(request, response);
         } finally {
             long timeTaken = System.currentTimeMillis() - startTime;
 
             recordAudit(httpRequest, requestTime, user, httpResponse.getStatus(), timeTaken);
-
-            // put the request id into the response so users can trace logs for this request
-            httpResponse.setHeader(AtlasClient.REQUEST_ID, requestId);
+            // can not response.setRequestId here，because response had been return back.
             currentThread.setName(oldName);
             RequestContext.clear();
         }
