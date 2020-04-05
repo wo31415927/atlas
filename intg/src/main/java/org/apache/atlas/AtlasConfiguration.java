@@ -26,12 +26,12 @@ import org.apache.commons.configuration.Configuration;
 public enum AtlasConfiguration {
     //web server configuration
     WEBSERVER_IDLE_TIMEOUT("atlas.webserver.idleTimeout",300000),
-    WEBSERVER_MIN_THREADS("atlas.webserver.minthreads", 10),
-    WEBSERVER_MAX_THREADS("atlas.webserver.maxthreads", 100),
+    WEBSERVER_MIN_THREADS("atlas.webserver.minthreads", 16),
+    WEBSERVER_MAX_THREADS("atlas.webserver.maxthreads", 16),
     WEBSERVER_KEEPALIVE_SECONDS("atlas.webserver.keepalivetimesecs", 60),
-    WEBSERVER_QUEUE_SIZE("atlas.webserver.queuesize", 1000),
+    WEBSERVER_QUEUE_SIZE("atlas.webserver.queuesize", 128),
     WEBSERVER_REQUEST_BUFFER_SIZE("atlas.jetty.request.buffer.size", 16192),
-    WEBSERVER_RESPONSE_OUTPUT_BUFFER_SIZE("atlas.jetty.response.output.buffer.size", 32*1024*10),
+    WEBSERVER_RESPONSE_OUTPUT_BUFFER_SIZE("atlas.jetty.response.output.buffer.size", 32*1024),
 
     QUERY_PARAM_MAX_LENGTH("atlas.query.param.max.length", 4*1024),
 

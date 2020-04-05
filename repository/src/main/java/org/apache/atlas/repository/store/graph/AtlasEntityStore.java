@@ -61,7 +61,7 @@ public interface AtlasEntityStore {
      * @param isMinExtInfo
      * @return AtlasEntity
      */
-    AtlasEntityWithExtInfo getById(String guid, boolean isMinExtInfo, boolean ignoreRelationships) throws AtlasBaseException;
+    AtlasEntityWithExtInfo getById(String guid, boolean isMinExtInfo, boolean ignoreRelationships, boolean includeClassificationType) throws AtlasBaseException;
 
     /**
      * Get entity header for the given GUID

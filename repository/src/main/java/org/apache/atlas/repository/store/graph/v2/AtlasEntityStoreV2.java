@@ -18,6 +18,7 @@
 package org.apache.atlas.repository.store.graph.v2;
 
 
+import com.carrotsearch.ant.tasks.junit4.dependencies.com.google.common.collect.Lists;
 import org.apache.atlas.AtlasErrorCode;
 import org.apache.atlas.GraphTransactionInterceptor;
 import org.apache.atlas.RequestContext;
@@ -104,20 +105,20 @@ public class AtlasEntityStoreV2 implements AtlasEntityStore {
     @Override
     @GraphTransaction
     public AtlasEntityWithExtInfo getById(String guid) throws AtlasBaseException {
-        return getById(guid, false, false);
+        return getById(guid, false, false, false);
     }
 
     @Override
     @GraphTransaction
-    public AtlasEntityWithExtInfo getById(final String guid, final boolean isMinExtInfo, boolean ignoreRelationships) throws AtlasBaseException {
+    public AtlasEntityWithExtInfo getById(final String guid, final boolean isMinExtInfo, boolean ignoreRelationships, boolean includeClassificationType) throws AtlasBaseException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("==> getById({}, {})", guid, isMinExtInfo);
+            LOG.debug("==> getById({}, {}, {}, {})", guid, isMinExtInfo, ignoreRelationships, includeClassificationType);
         }
 
         EntityGraphRetriever entityRetriever = new EntityGraphRetriever(typeRegistry, ignoreRelationships);
 
         AtlasEntityWithExtInfo ret = entityRetriever.toAtlasEntityWithExtInfo(guid, isMinExtInfo);
-
+        entityRetriever.toAtlasEntityWithClassificationType(ret,includeClassificationType);
         if (ret == null) {
             throw new AtlasBaseException(AtlasErrorCode.INSTANCE_GUID_NOT_FOUND, guid);
         }

@@ -441,7 +441,7 @@ public class AtlasTypeRegistry {
                 addTypesWithNoRefResolve(typesDef.getClassificationDefs());
                 addTypesWithNoRefResolve(typesDef.getEntityDefs());
                 addTypesWithNoRefResolve(typesDef.getRelationshipDefs());
-
+                //以上的结果classificationDefs.typeNameMap已经有了name—>type的映射关系，但type中尚无super和sub，以下逻辑初始化super和sub相关Type
                 resolveReferences();
             }
 
@@ -761,7 +761,7 @@ public class AtlasTypeRegistry {
                     registryData.structDefs.addType(structDef, new AtlasStructType(structDef));
                 } else if (typeDef.getClass().equals(AtlasClassificationDef.class)) {
                     AtlasClassificationDef classificationDef = (AtlasClassificationDef) typeDef;
-
+                    //根据guid清空classificationDefs相关对象和typeCache中的对象，addType是重新加入
                     registryData.classificationDefs.removeTypeDefByGuid(guid);
                     registryData.classificationDefs.addType(classificationDef,
                             new AtlasClassificationType(classificationDef));

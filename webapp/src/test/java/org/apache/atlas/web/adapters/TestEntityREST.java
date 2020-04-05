@@ -100,7 +100,7 @@ public class TestEntityREST {
     @Test
     public void testGetEntityById() throws Exception {
         createTestEntity();
-        AtlasEntityWithExtInfo response = entityREST.getById(dbEntity.getGuid(), false, false);
+        AtlasEntityWithExtInfo response = entityREST.getById(dbEntity.getGuid(), false, false, false);
 
         Assert.assertNotNull(response);
         Assert.assertNotNull(response.getEntity());
@@ -184,7 +184,7 @@ public class TestEntityREST {
     @Test(dependsOnMethods = "testAddAndGetClassification")
     public void  testGetEntityWithAssociations() throws Exception {
 
-        AtlasEntityWithExtInfo entity = entityREST.getById(dbEntity.getGuid(), false, false);
+        AtlasEntityWithExtInfo entity = entityREST.getById(dbEntity.getGuid(), false, false, false);
         final List<AtlasClassification> retrievedClassifications = entity.getEntity().getClassifications();
 
         Assert.assertNotNull(retrievedClassifications);

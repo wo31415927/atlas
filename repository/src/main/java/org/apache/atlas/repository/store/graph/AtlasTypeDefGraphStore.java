@@ -88,7 +88,7 @@ public abstract class AtlasTypeDefGraphStore implements AtlasTypeDefStore {
 
         try {
             ttr = typeRegistry.lockTypeRegistryForUpdate(typeUpdateLockMaxWaitTimeSeconds);
-
+            //clear中会初始化基本类型(如int、boolean)到allTypes中
             ttr.clear();
 
             AtlasTypesDef typesDef = new AtlasTypesDef(getEnumDefStore(ttr).getAll(),

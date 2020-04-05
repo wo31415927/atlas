@@ -17,23 +17,19 @@
  */
 package org.apache.atlas.repository.store.graph.v2;
 
+import com.carrotsearch.ant.tasks.junit4.dependencies.com.google.common.collect.Lists;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.base.Preconditions;
 import org.apache.atlas.AtlasErrorCode;
 import org.apache.atlas.exception.AtlasBaseException;
 import org.apache.atlas.model.TimeBoundary;
 import org.apache.atlas.model.glossary.enums.AtlasTermAssignmentStatus;
 import org.apache.atlas.model.glossary.relations.AtlasTermAssignmentHeader;
-import org.apache.atlas.model.instance.AtlasClassification;
-import org.apache.atlas.model.instance.AtlasEntity;
+import org.apache.atlas.model.instance.*;
 import org.apache.atlas.model.instance.AtlasEntity.AtlasEntitiesWithExtInfo;
 import org.apache.atlas.model.instance.AtlasEntity.AtlasEntityExtInfo;
 import org.apache.atlas.model.instance.AtlasEntity.AtlasEntityWithExtInfo;
-import org.apache.atlas.model.instance.AtlasEntityHeader;
-import org.apache.atlas.model.instance.AtlasObjectId;
-import org.apache.atlas.model.instance.AtlasRelatedObjectId;
-import org.apache.atlas.model.instance.AtlasRelationship;
 import org.apache.atlas.model.instance.AtlasRelationship.AtlasRelationshipWithExtInfo;
-import org.apache.atlas.model.instance.AtlasStruct;
 import org.apache.atlas.model.typedef.AtlasRelationshipDef;
 import org.apache.atlas.model.typedef.AtlasRelationshipEndDef;
 import org.apache.atlas.model.typedef.AtlasStructDef.AtlasAttributeDef;
@@ -43,15 +39,8 @@ import org.apache.atlas.repository.graphdb.AtlasEdge;
 import org.apache.atlas.repository.graphdb.AtlasEdgeDirection;
 import org.apache.atlas.repository.graphdb.AtlasElement;
 import org.apache.atlas.repository.graphdb.AtlasVertex;
-import org.apache.atlas.type.AtlasArrayType;
-import org.apache.atlas.type.AtlasEntityType;
-import org.apache.atlas.type.AtlasMapType;
-import org.apache.atlas.type.AtlasRelationshipType;
-import org.apache.atlas.type.AtlasStructType;
+import org.apache.atlas.type.*;
 import org.apache.atlas.type.AtlasStructType.AtlasAttribute;
-import org.apache.atlas.type.AtlasType;
-import org.apache.atlas.type.AtlasTypeRegistry;
-import org.apache.atlas.type.AtlasTypeUtil;
 import org.apache.atlas.utils.AtlasEntityUtil;
 import org.apache.atlas.utils.AtlasJson;
 import org.apache.commons.collections.CollectionUtils;
@@ -61,6 +50,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -435,9 +425,9 @@ public class EntityGraphRetriever {
             if (entityExtInfo != null) {
                 entityExtInfo.addReferredEntity(guid, entity);
             }
-
+            //设置AtlasEntity的typeName,Status等属性
             mapSystemAttributes(entityVertex, entity);
-
+            //设置AtlasEntity的attribute属性，不包含columns和relationShipAttr
             mapAttributes(entityVertex, entity, entityExtInfo, isMinExtInfo);
 
             if (!ignoreRelationshipAttr) { // only map when really needed
@@ -464,13 +454,13 @@ public class EntityGraphRetriever {
             if (entityExtInfo != null) {
                 entityExtInfo.addReferredEntity(guid, entity);
             }
-
+            //给hive_column对象添加基本属性
             mapSystemAttributes(entityVertex, entity);
 
             mapClassifications(entityVertex, entity);
 
             AtlasEntityType entityType = typeRegistry.getEntityTypeByName(entity.getTypeName());
-
+            //初始化hive_column对象专有属性，如position
             if (entityType != null) {
                 for (AtlasAttribute attribute : entityType.getMinInfoAttributes().values()) {
                     Object attrValue = getVertexAttribute(entityVertex, attribute);
@@ -1390,5 +1380,33 @@ public class EntityGraphRetriever {
 
             relationship.setAttribute(attribute.getName(), attrValue);
         }
+    }
+
+    /**
+     * add AtlasClassificationType info
+     * @param extInfo
+     * @param includeClassificationType
+     */
+    public void toAtlasEntityWithClassificationType(AtlasEntityWithExtInfo extInfo, boolean includeClassificationType) {
+        if(null == extInfo || !includeClassificationType){
+            return;
+        }
+        AtlasEntity atlasEntity = extInfo.getEntity();
+        atlasEntity.setClassifications(addClassificationType(atlasEntity.getClassifications()));
+        for(AtlasEntity entity : extInfo.getReferredEntities().values()){
+            entity.setClassifications(addClassificationType(entity.getClassifications()));
+        }
+    }
+
+    private List<AtlasClassification> addClassificationType(@Nullable List<AtlasClassification> classifications) {
+        if(null == classifications){
+            return null;
+        }
+        List<AtlasClassification> resultClassifications = Lists.newLinkedList();
+        for(AtlasClassification classification : classifications){
+            AtlasClassificationWithType classificationWithType = new AtlasClassificationWithType(classification).setType((AtlasClassificationType) typeRegistry.getClassificationTypeByName(Preconditions.checkNotNull(classification.getTypeName())));
+            resultClassifications.add(classificationWithType);
+        }
+        return resultClassifications;
     }
 }
