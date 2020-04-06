@@ -1404,7 +1404,7 @@ public class EntityGraphRetriever {
         }
         List<AtlasClassification> resultClassifications = Lists.newLinkedList();
         for(AtlasClassification classification : classifications){
-            AtlasClassificationWithType classificationWithType = new AtlasClassificationWithType(classification).setType((AtlasClassificationType) typeRegistry.getClassificationTypeByName(Preconditions.checkNotNull(classification.getTypeName())));
+            AtlasClassificationWithType classificationWithType = new AtlasClassificationWithType(classification).setType(typeRegistry.getClassificationTypeByName(Preconditions.checkNotNull(classification.getTypeName())));
             resultClassifications.add(classificationWithType);
         }
         return resultClassifications;

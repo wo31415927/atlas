@@ -370,14 +370,15 @@ public class AtlasTypeRegistry {
 
         private void resolveReferences() throws AtlasBaseException {
             for (AtlasType type : registryData.allTypes.getAllTypes()) {
+                //初始化super相关
                 type.resolveReferences(this);
             }
-
             for (AtlasType type : registryData.allTypes.getAllTypes()) {
+                //对type的祖先初始化subTypes、allSubTypes、typeAndAllSubTypes
                 type.resolveReferencesPhase2(this);
             }
-
             for (AtlasType type : registryData.allTypes.getAllTypes()) {
+                //初始化type.entityTypes和classificationDef.subTypes
                 type.resolveReferencesPhase3(this);
             }
         }

@@ -90,8 +90,9 @@ public class AtlasClassificationType extends AtlasStructType {
         super.resolveReferences(typeRegistry);
 
         List<AtlasClassificationType> s    = new ArrayList<>();
-        Set<String>                   allS = new HashSet<>();
-        Map<String, AtlasAttribute>   allA = new HashMap<>();
+        //HashSet —> LinkedHashSet to keep order
+        Set<String>                   allS = new LinkedHashSet<>();
+        Map<String, AtlasAttribute>   allA = new LinkedHashMap<>();
 
         getTypeHierarchyInfo(typeRegistry, allS, allA);
 
@@ -110,14 +111,14 @@ public class AtlasClassificationType extends AtlasStructType {
         this.allSuperTypes      = Collections.unmodifiableSet(allS);
         this.allAttributes      = Collections.unmodifiableMap(allA);
         this.uniqAttributes     = getUniqueAttributes(this.allAttributes);
-        this.subTypes           = new HashSet<>(); // this will be populated in resolveReferencesPhase2()
-        this.allSubTypes        = new HashSet<>(); // this will be populated in resolveReferencesPhase2()
-        this.typeAndAllSubTypes = new HashSet<>(); // this will be populated in resolveReferencesPhase2()
-        this.entityTypes        = new HashSet<>(); // this will be populated in resolveReferencesPhase3()
+        this.subTypes           = new LinkedHashSet<>(); // this will be populated in resolveReferencesPhase2()
+        this.allSubTypes        = new LinkedHashSet<>(); // this will be populated in resolveReferencesPhase2()
+        this.typeAndAllSubTypes = new LinkedHashSet<>(); // this will be populated in resolveReferencesPhase2()
+        this.entityTypes        = new LinkedHashSet<>(); // this will be populated in resolveReferencesPhase3()
 
         this.typeAndAllSubTypes.add(this.getTypeName());
 
-        this.typeAndAllSuperTypes = new HashSet<>(this.allSuperTypes);
+        this.typeAndAllSuperTypes = new LinkedHashSet<>(this.allSuperTypes);
         this.typeAndAllSuperTypes.add(this.getTypeName());
         this.typeAndAllSuperTypes = Collections.unmodifiableSet(this.typeAndAllSuperTypes);
     }

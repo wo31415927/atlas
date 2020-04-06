@@ -18,6 +18,7 @@
 package org.apache.atlas.type;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.atlas.exception.AtlasBaseException;
 import org.apache.atlas.model.TypeCategory;
@@ -130,6 +131,7 @@ public abstract class AtlasType {
      * when an attribute instance is created i.e. AtlasAttribute, this method
      * will be called to get AtlasEntityType replaced with AtlasObjectType
      */
+    @JsonIgnore
     public AtlasType getTypeForAttribute() {
         return this;
     }
