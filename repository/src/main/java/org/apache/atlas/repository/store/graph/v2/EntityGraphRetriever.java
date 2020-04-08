@@ -1404,7 +1404,9 @@ public class EntityGraphRetriever {
         }
         List<AtlasClassification> resultClassifications = Lists.newLinkedList();
         for(AtlasClassification classification : classifications){
-            AtlasClassificationWithType classificationWithType = new AtlasClassificationWithType(classification).setType(typeRegistry.getClassificationTypeByName(Preconditions.checkNotNull(classification.getTypeName())));
+            AtlasClassificationType originalType = typeRegistry.getClassificationTypeByName(Preconditions.checkNotNull(classification.getTypeName()));
+            //为解决json序列化存在循环依赖问题，setType仅设置typeName信息
+            AtlasClassificationWithType classificationWithType = new AtlasClassificationWithType(classification).setType(originalType);
             resultClassifications.add(classificationWithType);
         }
         return resultClassifications;
