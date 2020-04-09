@@ -24,10 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -38,6 +35,7 @@ import org.apache.atlas.model.PList;
 import org.apache.atlas.model.SearchFilter.SortType;
 import org.apache.atlas.model.TimeBoundary;
 import org.apache.atlas.model.instance.AtlasEntity.Status;
+import org.apache.atlas.type.AtlasClassificationType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -59,6 +57,15 @@ public class AtlasClassification extends AtlasStruct implements Serializable {
     private Boolean            propagate                         = null;
     private List<TimeBoundary> validityPeriods                   = null;
     private Boolean            removePropagationsOnEntityDelete  = null;
+    /**
+     * 增加父子类typeNames信息,使用List而非Set是为了避免json反序列化时默认用HashSet操作丢失顺序
+     */
+    private List<String> allSuperTypes = new LinkedList<>();
+    private List<String> subTypes = new LinkedList<>();
+    private List<String> allSubTypes = new LinkedList<>();
+    private List<String> typeAndAllSubTypes = new LinkedList<>();
+    private List<String> typeAndAllSuperTypes = new LinkedList<>();
+    private String typeAndAllSubTypesQryStr = "";
 
     public AtlasClassification() {
         this(null, null);
@@ -89,6 +96,12 @@ public class AtlasClassification extends AtlasStruct implements Serializable {
             setPropagate(other.isPropagate());
             setValidityPeriods(other.getValidityPeriods());
             setRemovePropagationsOnEntityDelete(other.getRemovePropagationsOnEntityDelete());
+            getAllSuperTypes().addAll(other.getAllSuperTypes());
+            getSubTypes().addAll(getSubTypes());
+            getAllSubTypes().addAll(other.getAllSubTypes());
+            getTypeAndAllSubTypes().addAll(other.getTypeAndAllSubTypes());
+            getTypeAndAllSuperTypes().addAll(other.getTypeAndAllSuperTypes());
+            setTypeAndAllSubTypesQryStr(other.getTypeAndAllSubTypesQryStr());
         }
     }
 
@@ -130,6 +143,63 @@ public class AtlasClassification extends AtlasStruct implements Serializable {
 
     public void setRemovePropagationsOnEntityDelete(Boolean removePropagationsOnEntityDelete) {
         this.removePropagationsOnEntityDelete = removePropagationsOnEntityDelete;
+    }
+
+    public List<String> getAllSuperTypes() {
+        return allSuperTypes;
+    }
+
+    public void setAllSuperTypes(List<String> allSuperTypes) {
+        this.allSuperTypes = allSuperTypes;
+    }
+
+    public List<String> getSubTypes() {
+        return subTypes;
+    }
+
+    public void setSubTypes(List<String> subTypes) {
+        this.subTypes = subTypes;
+    }
+
+    public List<String> getAllSubTypes() {
+        return allSubTypes;
+    }
+
+    public void setAllSubTypes(List<String> allSubTypes) {
+        this.allSubTypes = allSubTypes;
+    }
+
+    public List<String> getTypeAndAllSubTypes() {
+        return typeAndAllSubTypes;
+    }
+
+    public void setTypeAndAllSubTypes(List<String> typeAndAllSubTypes) {
+        this.typeAndAllSubTypes = typeAndAllSubTypes;
+    }
+
+    public List<String> getTypeAndAllSuperTypes() {
+        return typeAndAllSuperTypes;
+    }
+
+    public void setTypeAndAllSuperTypes(List<String> typeAndAllSuperTypes) {
+        this.typeAndAllSuperTypes = typeAndAllSuperTypes;
+    }
+
+    public String getTypeAndAllSubTypesQryStr() {
+        return typeAndAllSubTypesQryStr;
+    }
+
+    public void setTypeAndAllSubTypesQryStr(String typeAndAllSubTypesQryStr) {
+        this.typeAndAllSubTypesQryStr = typeAndAllSubTypesQryStr;
+    }
+
+    public void setType(AtlasClassificationType type) {
+        this.allSuperTypes.addAll(type.getAllSuperTypes());
+        this.typeAndAllSuperTypes.addAll(type.getTypeAndAllSuperTypes());
+        this.subTypes.addAll(type.getSubTypes());
+        this.allSubTypes.addAll(type.getAllSubTypes());
+        this.typeAndAllSubTypes.addAll(type.getTypeAndAllSubTypes());
+        this.typeAndAllSubTypesQryStr = type.getTypeAndAllSubTypesQryStr();
     }
 
     @JsonIgnore

@@ -1392,23 +1392,20 @@ public class EntityGraphRetriever {
             return;
         }
         AtlasEntity atlasEntity = extInfo.getEntity();
-        atlasEntity.setClassifications(addClassificationType(atlasEntity.getClassifications()));
+        addClassificationType(atlasEntity.getClassifications());
         for(AtlasEntity entity : extInfo.getReferredEntities().values()){
-            entity.setClassifications(addClassificationType(entity.getClassifications()));
+            addClassificationType(entity.getClassifications());
         }
     }
 
-    private List<AtlasClassification> addClassificationType(@Nullable List<AtlasClassification> classifications) {
+    private void addClassificationType(@Nullable List<AtlasClassification> classifications) {
         if(null == classifications){
-            return null;
+            return;
         }
-        List<AtlasClassification> resultClassifications = Lists.newLinkedList();
         for(AtlasClassification classification : classifications){
             AtlasClassificationType originalType = typeRegistry.getClassificationTypeByName(Preconditions.checkNotNull(classification.getTypeName()));
             //为解决json序列化存在循环依赖问题，setType仅设置typeName信息
-            AtlasClassificationWithType classificationWithType = new AtlasClassificationWithType(classification).setType(originalType);
-            resultClassifications.add(classificationWithType);
+            classification.setType(originalType);
         }
-        return resultClassifications;
     }
 }
