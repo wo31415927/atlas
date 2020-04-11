@@ -73,7 +73,7 @@ public class BulkFetchAndUpdate {
     private static final String STEP_UPDATE = "update";
     private static final int EXIT_CODE_SUCCESS = 0;
     private static final int EXIT_CODE_FAILED = 1;
-    private static final String DEFAULT_ATLAS_URL = "http://localhost:21000/";
+    private static final String DEFAULT_ATLAS_URL = "http://localhost:31000/atlas";
     private static final String FILE_CLASSIFICATION_DEFS = "classification-definitions.json";
     private static final String FILE_ENTITY_HEADERS = "entity-headers.json";
 
@@ -351,10 +351,12 @@ public class BulkFetchAndUpdate {
             }
 
             try {
+                //获取hbase audit表中tagUpdateStartTime到当前时间范围内发生过增、删、改的记录对象对应的guid(含已删除的对象)
                 AtlasEntityHeaders entityHeaders = atlasClientV2.getEntityHeaders(fromTimestamp);
                 int guidHeaderMapSize = entityHeaders.getGuidHeaderMap().size();
                 try {
                     displayCrLf("Read entities: " + guidHeaderMapSize);
+                    //去除guid并过滤掉DELETED的对象,剩下的就是与classification存在关联关系的entity了
                     AtlasEntityHeaders updatedHeaders = removeEntityGuids(entityHeaders);
                     fileWriter.write(AtlasType.toJson(updatedHeaders));
 
@@ -394,7 +396,7 @@ public class BulkFetchAndUpdate {
                 }
 
                 updateClassificationsForHeader(header, uniqueNameEntityHeaderMap.get(key), keyFound);
-                displayCrLf("Processing: " + uniqueName);
+                displayCrLf("Processed: " + uniqueName);
             }
 
             displayCrLf("Processed: " + uniqueNameEntityHeaderMap.size());

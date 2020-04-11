@@ -138,7 +138,7 @@
 <!--                                        <descriptor>src/main/assemblies/atlas-sqoop-hook-package.xml</descriptor>-->
 <!--                                        <descriptor>src/main/assemblies/atlas-storm-hook-package.xml</descriptor>-->
                                         <descriptor>src/main/assemblies/atlas-kafka-hook-package.xml</descriptor>
-                                        <descriptor>src/main/assemblies/atlas-server-package.xml</descriptor>
+<!--                                        <descriptor>src/main/assemblies/atlas-server-package.xml</descriptor>-->
 <!--                                        打出包含hook目录的apache-atlas-2.0.0-bin.tar.gz，真正部署的压缩包-->
                                         <descriptor>src/main/assemblies/standalone-package.xml</descriptor>
 <!--                                        <descriptor>src/main/assemblies/src-package.xml</descriptor>-->

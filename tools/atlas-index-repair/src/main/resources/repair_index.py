@@ -34,7 +34,9 @@ def main():
     atlas_home = mc.atlasDir()
     confdir = mc.dirMustExist(mc.confDir(atlas_home))
     mc.executeEnvSh(confdir)
-    logdir = mc.dirMustExist(mc.logDir(atlas_home))
+    #logdir = mc.dirMustExist(mc.logDir(atlas_home))
+    #atlas第一次启动时会创建该目录
+    logdir = mc.dirMustExist(os.path.expandvars('$ATLAS_LOG_DIR'))
     mc.dirMustExist(mc.dataDir(atlas_home))
 
     if mc.isCygwin():

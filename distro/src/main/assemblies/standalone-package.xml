@@ -189,6 +189,31 @@
             <directoryMode>0755</directoryMode>
         </fileSet>
 
+        <!-- for index-repair setup -->
+        <fileSet>
+            <directory>../tools/atlas-index-repair/target</directory>
+            <outputDirectory>tools/atlas-index-repair</outputDirectory>
+            <includes>
+                <include>classes/*.py</include>
+                <include>classes/*.xml</include>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- for classification-updater setup -->
+        <fileSet>
+            <directory>../tools/classification-updater/target</directory>
+            <outputDirectory>tools/classification-updater</outputDirectory>
+            <includes>
+                <include>classes/*.sh</include>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
         <!-- for migration setup -->
         <fileSet>
             <directory>../tools/atlas-migration-exporter</directory>

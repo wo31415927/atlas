@@ -536,7 +536,7 @@ public class HBaseBasedAuditRepository extends AbstractStorageBasedAuditReposito
         final String classificationUpdatesAction = "CLASSIFICATION_";
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Listing events for fromTimestamp {}, toTimestamp {}, action {}", fromTimestamp, toTimestamp);
+            LOG.debug("Listing events for fromTimestamp {}, toTimestamp {}, action {}", fromTimestamp, toTimestamp, classificationUpdatesAction);
         }
 
         Table table = null;

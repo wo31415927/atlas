@@ -117,7 +117,7 @@ then
 fi
 
 JAVA_PROPERTIES="$ATLAS_OPTS -Datlas.log.dir=$ATLAS_LOG_DIR -Datlas.log.file=import-hive.log
--Dlog4j.configuration=atlas-hive-import-log4j.xml"
+-Dlog4j.configuration=atlas-log4j.xml"
 
 IMPORT_ARGS=
 JVM_ARGS=
@@ -143,7 +143,8 @@ JAVA_PROPERTIES="${JAVA_PROPERTIES} ${JVM_ARGS}"
 
 echo "Log file for import is $LOGFILE"
 
-"${JAVA_BIN}" ${JAVA_PROPERTIES} -cp "${CP}" org.apache.atlas.hive.bridge.HiveMetaStoreBridge $IMPORT_ARGS
+"${JAVA_BIN}" ${JAVA_PROPERTIES} -Datlas.conf=${ATLAS_HOME}/conf
+-cp "${CP}" org.apache.atlas.hive.bridge.HiveMetaStoreBridge $IMPORT_ARGS
 
 RETVAL=$?
 [ $RETVAL -eq 0 ] && echo Hive Meta Data imported successfully!!!

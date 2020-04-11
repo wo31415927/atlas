@@ -44,16 +44,26 @@ if [ ! -e "${JAVA_BIN}" ] || [ ! -e "${JAR_BIN}" ]; then
   exit 1
 fi
 
+if [ ! -e "${ATLAS_HOME}" ]; then
+  echo "$ATLAS_HOME not found on the system. exit."
+  exit 1
+fi
+
+if [ ! -e "${ATLAS_LOG_DIR}" ]; then
+  echo "$ATLAS_LOG_DIR not found on the system. exit."
+  exit 1
+fi
+
 # Construct ATLAS_CONF where atlas-properties reside
-export ATLAS_CONF=/usr/hdp/current/atlas-server/conf/
+ATLAS_CONF=${ATLAS_HOME}/conf
+echo $ATLAS_CONF
 
 # log dir for applications
-ATLAS_LOG_DIR="/var/log/atlas"
 ATLAS_LOG_FILE="classification-updater.log"
-LOG_CONFIG="${BASEDIR}/atlas-log4j.xml"
+LOG_CONFIG="${ATLAS_CONF}/atlas-log4j.xml"
 
 # Construct Atlas classpath. 
-for i in "/usr/hdp/current/atlas-server/server/webapp/atlas/WEB-INF/lib/"*.jar; do
+for i in "${ATLAS_HOME}/server/webapp/atlas/WEB-INF/lib/"*.jar; do
   ATLASCPPATH="${ATLASCPPATH}:$i"
 done
 

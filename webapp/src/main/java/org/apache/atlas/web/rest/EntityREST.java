@@ -873,6 +873,13 @@ public class EntityREST {
     }
   }
 
+  /**
+   * 获取hbase audit表中tagUpdateStartTime到当前时间范围内发生过增、删、改的记录对象对应的guid(含已删除的对象)
+   *
+   * @param tagUpdateStartTime
+   * @return
+   * @throws AtlasBaseException
+   */
   @GET
   @Path("bulk/headers")
   @Produces(Servlets.JSON_MEDIA_TYPE)

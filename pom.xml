@@ -756,6 +756,8 @@
     <modules>
         <module>build-tools</module>
         <module>test-tools</module>
+        <module>tools/atlas-index-repair</module>
+        <module>tools/classification-updater</module>
 
         <module>intg</module>
         <module>common</module>
@@ -1905,7 +1907,7 @@
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <argLine>-Djava.awt.headless=true -Dproject.version=${project.version}
                         -Dhadoop.tmp.dir="${project.build.directory}/tmp-hadoop-${user.name}"
-                        -Xmx1024m -Djava.net.preferIPv4Stack=true ${atlas.surefire.options}
+                        -Xmx4096m -Djava.net.preferIPv4Stack=true ${atlas.surefire.options}
                     </argLine>
                     <skip>${skipUTs}</skip>
                 </configuration>

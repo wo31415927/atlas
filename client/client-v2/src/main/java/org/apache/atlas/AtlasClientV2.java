@@ -260,14 +260,19 @@ public class AtlasClientV2 extends AtlasBaseClient {
     }
 
     public AtlasEntityWithExtInfo getEntityByGuid(String guid) throws AtlasServiceException {
-        return getEntityByGuid(guid, false, false);
+        return getEntityByGuid(guid, false, false, false);
     }
 
     public AtlasEntityWithExtInfo getEntityByGuid(String guid, boolean minExtInfo, boolean ignoreRelationships) throws AtlasServiceException {
+        return getEntityByGuid(guid, minExtInfo, ignoreRelationships, false);
+    }
+
+    public AtlasEntityWithExtInfo getEntityByGuid(String guid, boolean minExtInfo, boolean ignoreRelationships, boolean includeClassificationType) throws AtlasServiceException {
         MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
 
         queryParams.add("minExtInfo", String.valueOf(minExtInfo));
         queryParams.add("ignoreRelationships", String.valueOf(ignoreRelationships));
+        queryParams.add("includeClassificationType", String.valueOf(includeClassificationType));
 
         return callAPI(API_V2.GET_ENTITY_BY_GUID, AtlasEntityWithExtInfo.class, queryParams, guid);
     }
@@ -376,6 +381,11 @@ public class AtlasClientV2 extends AtlasBaseClient {
         callAPI(formatPathParameters(API_V2.DELETE_CLASSIFICATION, guid, classificationName), null, null);
     }
 
+    /**
+     * @param tagUpdateStartTime
+     * @return
+     * @throws AtlasServiceException
+     */
     public AtlasEntityHeaders getEntityHeaders(long tagUpdateStartTime) throws AtlasServiceException {
         MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
         queryParams.add("tagUpdateStartTime", Long.toString(tagUpdateStartTime));
