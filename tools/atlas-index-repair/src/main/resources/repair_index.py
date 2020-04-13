@@ -17,7 +17,7 @@
 # limitations under the License.
 import os
 import sys
-sys.path.insert(0, '/usr/hdp/current/atlas-server/bin/')
+sys.path.insert(0, os.path.expandvars('$ATLAS_HOME/bin'))
 
 import traceback
 import subprocess
@@ -27,7 +27,7 @@ ATLAS_LOG_FILE="atlas-index-janus-repair.log"
 ATLAS_LOG_OPTS="-Datlas.log.dir=%s -Datlas.log.file="+ATLAS_LOG_FILE
 ATLAS_COMMAND_OPTS="-Datlas.home=%s"
 ATLAS_CONFIG_OPTS="-Datlas.conf=%s"
-DEFAULT_JVM_HEAP_OPTS="-Xmx4096m -XX:MaxPermSize=512m"
+DEFAULT_JVM_HEAP_OPTS="-Xmx2048m -XX:MaxPermSize=512m"
 DEFAULT_JVM_OPTS="-Dlog4j.configuration=atlas-log4j.xml -Djava.net.preferIPv4Stack=true -server"
 
 def main():
@@ -35,7 +35,6 @@ def main():
     confdir = mc.dirMustExist(mc.confDir(atlas_home))
     mc.executeEnvSh(confdir)
     #logdir = mc.dirMustExist(mc.logDir(atlas_home))
-    #atlas第一次启动时会创建该目录
     logdir = mc.dirMustExist(os.path.expandvars('$ATLAS_LOG_DIR'))
     mc.dirMustExist(mc.dataDir(atlas_home))
 

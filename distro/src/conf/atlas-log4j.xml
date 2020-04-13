@@ -20,7 +20,7 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <param name="Target" value="System.out"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d %-5p - [%t:%x] ~ %m (%C{1}:%L)%n"/>
@@ -32,16 +32,16 @@
         <param name="Append" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d %-5p - [%t:%x] ~ %m (%C{1}:%L)%n"/>
-            <param name="maxFileSize" value="100MB" />
-            <param name="maxBackupIndex" value="20" />
+            <param name="maxFileSize" value="100MB"/>
+            <param name="maxBackupIndex" value="20"/>
         </layout>
     </appender>
 
     <appender name="LARGE_MESSAGES" class="org.apache.log4j.RollingFileAppender">
         <param name="File" value="${atlas.log.dir}/large_messages.log"/>
         <param name="Append" value="true"/>
-        <param name="MaxFileSize" value="100MB" />
-        <param name="MaxBackupIndex" value="20" />
+        <param name="MaxFileSize" value="100MB"/>
+        <param name="MaxBackupIndex" value="20"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d %m%n"/>
         </layout>
@@ -52,8 +52,8 @@
         <param name="Append" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d %x %m%n"/>
-            <param name="maxFileSize" value="100MB" />
-            <param name="maxBackupIndex" value="20" />
+            <param name="maxFileSize" value="100MB"/>
+            <param name="maxBackupIndex" value="20"/>
         </layout>
     </appender>
 
@@ -62,7 +62,7 @@
         <param name="Append" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d %x %m%n"/>
-            <param name="maxFileSize" value="100MB" />
+            <param name="maxFileSize" value="100MB"/>
         </layout>
     </appender>
 
@@ -71,55 +71,91 @@
         <param name="Append" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d %m%n"/>
-            <param name="maxFileSize" value="100MB" />
-            <param name="maxBackupIndex" value="20" />
+            <param name="maxFileSize" value="100MB"/>
+            <param name="maxBackupIndex" value="20"/>
         </layout>
     </appender>
 
     <!-- Uncomment the following for perf logs -->
-    <appender name="perf_appender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${atlas.log.dir}/perf.log" />
-        <param name="datePattern" value="'.'yyyy-MM-dd" />
-        <param name="append" value="true" />
+    <appender name="PERF_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${atlas.log.dir}/perf.log"/>
+        <param name="datePattern" value="'.'yyyy-MM-dd"/>
+        <param name="append" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d|%t|%m%n" />
+            <param name="ConversionPattern" value="%d|%t|%m%n"/>
         </layout>
     </appender>
 
+    <appender name="REPAIR" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="${atlas.log.dir}/repair-index.log"/>
+        <param name="Append" value="true"/>
+        <param name="maxFileSize" value="100MB"/>
+        <param name="maxBackupIndex" value="20"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p - [%t:%x] ~ %m (%C{1}:%L)%n"/>
+        </layout>
+    </appender>
+
+    <appender name="CLASSIFICATION_UPDATER" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="${atlas.log.dir}/classification-updater.log"/>
+        <param name="Append" value="true"/>
+        <param name="maxFileSize" value="100MB"/>
+        <param name="maxBackupIndex" value="20"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p - [%t:%x] ~ %m (%C{1}:%L)%n"/>
+        </layout>
+    </appender>
+
+    <logger name="org.apache.atlas.tools.BulkFetchAndUpdate" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="CLASSIFICATION_UPDATER"/>
+    </logger>
+
+    <logger name="org.apache.atlas.tools.RepairIndex" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="REPAIR"/>
+    </logger>
+
     <logger name="org.apache.atlas.perf" additivity="false">
-        <level value="debug" />
-        <appender-ref ref="perf_appender" />
+        <level value="debug"/>
+        <appender-ref ref="PERF_APPENDER"/>
     </logger>
 
     <logger name="org.apache.atlas" additivity="false">
         <level value="info"/>
-        <appender-ref ref="console"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <logger name="org.janusgraph" additivity="false">
         <level value="info"/>
-        <appender-ref ref="console"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <logger name="org.springframework" additivity="false">
-        <level value="info"/>
-        <appender-ref ref="console"/>
+        <level value="warn"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <logger name="org.eclipse" additivity="false">
         <level value="warn"/>
-        <appender-ref ref="console"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <logger name="com.sun.jersey" additivity="false">
         <level value="warn"/>
-        <appender-ref ref="console"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <!-- to avoid logs - The configuration log.flush.interval.messages = 1 was supplied but isn't a known config -->
     <logger name="org.apache.kafka.common.config.AbstractConfig" additivity="false">
         <level value="error"/>
         <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <logger name="AUDIT" additivity="false">
@@ -130,6 +166,7 @@
     <logger name="LARGE_MESSAGES" additivity="false">
         <level value="warn"/>
         <appender-ref ref="LARGE_MESSAGES"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <logger name="METRICS" additivity="false">
@@ -140,11 +177,13 @@
     <logger name="FAILED" additivity="false">
         <level value="info"/>
         <appender-ref ref="FAILED"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <root>
-        <priority value="info"/>
-        <appender-ref ref="console"/>
+        <level value="info"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </root>
 
 </log4j:configuration>

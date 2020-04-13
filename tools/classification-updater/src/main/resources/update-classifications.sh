@@ -60,7 +60,7 @@ echo $ATLAS_CONF
 
 # log dir for applications
 ATLAS_LOG_FILE="classification-updater.log"
-LOG_CONFIG="${ATLAS_CONF}/atlas-log4j.xml"
+LOG_CONFIG="atlas-log4j.xml"
 
 # Construct Atlas classpath. 
 for i in "${ATLAS_HOME}/server/webapp/atlas/WEB-INF/lib/"*.jar; do
@@ -85,7 +85,7 @@ then
    CP=`cygpath -w -p ${CP}`
 fi
 
-JAVA_PROPERTIES="$ATLAS_OPTS -Datlas.log.dir=$ATLAS_LOG_DIR -Datlas.log.file=$ATLAS_LOG_FILE -Dlog4j.configuration=file://$LOG_CONFIG"
+JAVA_PROPERTIES="$ATLAS_OPTS -Datlas.log.dir=$ATLAS_LOG_DIR -Datlas.log.file=$ATLAS_LOG_FILE -Dlog4j.configuration=$LOG_CONFIG"
 
 IMPORT_ARGS=$@
 JVM_ARGS=

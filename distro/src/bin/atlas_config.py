@@ -128,7 +128,7 @@ def logDir(dir):
     return os.environ.get(ATLAS_LOG, localLog)
 
 def pidFile(dir):
-    localPid = os.path.join(dir, LOG)
+    localPid = os.path.join(dir)
     return os.path.join(os.environ.get(ATLAS_PID, localPid), 'atlas.pid')
 
 def dataDir(dir):

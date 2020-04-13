@@ -296,6 +296,21 @@
                                             <artifactId>jackson-annotations</artifactId>
                                             <version>${jackson.version}</version>
                                         </artifactItem>
+                                        <dependency>
+                                            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+                                            <artifactId>jackson-jaxrs-json-provider</artifactId>
+                                            <version>${jackson.version}</version>
+                                        </dependency>
+                                        <dependency>
+                                            <groupId>com.fasterxml.jackson.module</groupId>
+                                            <artifactId>jackson-module-jaxb-annotations</artifactId>
+                                            <version>${jackson.version}</version>
+                                        </dependency>
+                                        <dependency>
+                                            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+                                            <artifactId>jackson-jaxrs-base</artifactId>
+                                            <version>${jackson.version}</version>
+                                        </dependency>
                                         <artifactItem>
                                             <groupId>commons-configuration</groupId>
                                             <artifactId>commons-configuration</artifactId>

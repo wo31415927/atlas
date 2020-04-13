@@ -51,6 +51,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.HashMap;
@@ -263,8 +266,14 @@ public class BulkFetchAndUpdate {
         return new BufferedReader(new FileReader(basePath + fileName));
     }
 
-    private static boolean fileCheck(String basePath, String[] files, boolean existCheck) {
+    public static boolean fileCheck(String basePath, String[] files, boolean existCheck) throws IOException {
         boolean ret = true;
+        Path path = Paths.get(basePath);
+        if (!Files.exists(path)){
+            displayCrLf(basePath + " not exist,create dir now.");
+            Files.createDirectory(path);
+        }
+
         for (String f : files) {
             ret = ret && fileCheck(basePath, f, existCheck);
         }
