@@ -109,11 +109,13 @@
     <logger name="org.apache.atlas.tools.BulkFetchAndUpdate" additivity="false">
         <level value="info"/>
         <appender-ref ref="CLASSIFICATION_UPDATER"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <logger name="org.apache.atlas.tools.RepairIndex" additivity="false">
         <level value="info"/>
         <appender-ref ref="REPAIR"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <logger name="org.apache.atlas.perf" additivity="false">

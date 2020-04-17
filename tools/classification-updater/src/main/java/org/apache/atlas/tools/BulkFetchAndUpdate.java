@@ -27,10 +27,7 @@ import org.apache.atlas.model.SearchFilter;
 import org.apache.atlas.model.instance.AtlasClassification;
 import org.apache.atlas.model.instance.AtlasEntityHeader;
 import org.apache.atlas.model.instance.AtlasEntityHeaders;
-import org.apache.atlas.model.typedef.AtlasClassificationDef;
-import org.apache.atlas.model.typedef.AtlasEntityDef;
-import org.apache.atlas.model.typedef.AtlasStructDef;
-import org.apache.atlas.model.typedef.AtlasTypesDef;
+import org.apache.atlas.model.typedef.*;
 import org.apache.atlas.type.AtlasType;
 import org.apache.atlas.utils.AtlasJson;
 import org.apache.atlas.utils.AuthenticationUtil;
@@ -55,11 +52,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static org.apache.atlas.model.instance.AtlasEntity.Status.DELETED;
@@ -271,7 +264,7 @@ public class BulkFetchAndUpdate {
         Path path = Paths.get(basePath);
         if (!Files.exists(path)){
             displayCrLf(basePath + " not exist,create dir now.");
-            Files.createDirectory(path);
+            Files.createDirectories(path);
         }
 
         for (String f : files) {
@@ -473,6 +466,8 @@ public class BulkFetchAndUpdate {
 
             AtlasTypesDef typesDef = atlasClientV2.getAllTypeDefs(searchFilter);
             displayCrLf("Found classifications: " + typesDef.getClassificationDefs().size());
+            //按创建时间排序，保证father在son前面导入
+            typesDef.getClassificationDefs().sort(Comparator.comparing(AtlasBaseTypeDef::getCreateTime));
             return typesDef.getClassificationDefs();
         }
     }
